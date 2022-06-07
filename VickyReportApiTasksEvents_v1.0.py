@@ -8,10 +8,10 @@ import sys
 
 # add apikey in topia 
 # ex. 'eAU6Fs3sc0WVLXQUMgJt6K0wIkWJFgBG8X1IJIHRyaaZr3djtFkGGaid5o1q8W895sPm0obLo03WuCZzWcZtn7ECBGKwYiuID571hBe6dpiQVcHw4Vsizz'
-apikey = '<apikey>'
+apikey = '<API Key>'
 
 #ex. 'https://company-dashboard.vicarius.cloud'
-urldashboard = '<https://company-dashboard.vicarius.cloud>' 
+urldashboard = 'https://<company>.vicarius.cloud' 
 
 f = open('reportcsv_Tasks.csv', 'w', encoding='UTF8')
 
@@ -58,7 +58,11 @@ def getTasksEndopintsEvents(apikey,urldashboard,fr0m,siz3,count):
         username = i['taskEndpointsEventTask']['taskUser']['userFirstName']
         username = username + " " + i['taskEndpointsEventTask']['taskUser']['userLastName']
         taskType = i['taskEndpointsEventTask']['taskTaskType']['taskTypeName']
-        publisherName = i['taskEndpointsEventTask']['taskPublisher']['publisherName']
+        
+        try:
+            publisherName = i['taskEndpointsEventTask']['taskPublisher']['publisherName']
+        except:
+            publisherName = ""
 
         pathproduct = ""
         pathproductdesc = ""
@@ -76,8 +80,12 @@ def getTasksEndopintsEvents(apikey,urldashboard,fr0m,siz3,count):
             messageStatus = ""
             
         else:
-            actionStatus = i['taskEndpointsEventOrganizationEndpointPatchPatchPackages']['organizationEndpointPatchPatchPackagesActionStatus']['actionStatusName']
-            messageStatus = i['taskEndpointsEventOrganizationEndpointPatchPatchPackages']['organizationEndpointPatchPatchPackagesStatusMessage']
+            try:
+                actionStatus = i['taskEndpointsEventOrganizationEndpointPatchPatchPackages']['organizationEndpointPatchPatchPackagesActionStatus']['actionStatusName']
+                messageStatus = i['taskEndpointsEventOrganizationEndpointPatchPatchPackages']['organizationEndpointPatchPatchPackagesStatusMessage']
+            except:
+                actionStatus = ""
+                messageStatus = ""
         
         createAt = timestamptodatetime(i['analyticsEventCreatedAt'])
         updateAt = timestamptodatetime(i['analyticsEventUpdatedAt'])
